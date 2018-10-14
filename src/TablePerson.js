@@ -3,6 +3,7 @@ import Person from './Person.js';
 import './App.css';
 import AddPerson from './AddPerson.js';
 import Filter from './Filter.js';
+
 class TablePerson extends React.Component {
     constructor(props) {
         super(props);
@@ -66,7 +67,7 @@ class TablePerson extends React.Component {
         let addPerson = <AddPerson table={this.state.table} />;
         let filter = <Filter table={this.state.table} />
         return <div className="tableFinal">
-            {filter}         
+            {filter}
             {addPerson}
         </div>
     }

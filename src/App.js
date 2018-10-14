@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import TablePerson from './TablePerson.js';
-import AddPerson from './AddPerson.js';
-import Person from './Person.js';
-import Filter from './Filter.js';
 import './App.css';
+import Person from './Person.js';
+import { connect } from 'react-redux';
 
 class App extends Component {
-  
+
   render() {
     return (
       <div className="App">
@@ -14,13 +13,31 @@ class App extends Component {
           <h1 className="App-title">Integration Week End</h1>
         </header>
         <div>
-          {tableau}  
-        
+          {tableau}
+          <Person name={this.props.user.name}product="Test" price="10.00" />
+      
         </div>
       </div>
     );
   }
 }
 
-let tableau = <TablePerson  />;
-export default App;
+let tableau = <TablePerson />;
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.userReducer,
+    math: state.mathReducer
+  };
+};
+const mapDispatchToProps =(dispatch) => {
+  return {
+    setName: (name) => {
+      dispatch({
+        type:"SET_NAME",
+        payload: name
+      });
+    }
+  };
+};
+export default connect(mapStateToProps,mapDispatchToProps)(App);
