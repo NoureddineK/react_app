@@ -3,7 +3,7 @@ import Person from './Person.js';
 import './App.css';
 import AddPerson from './AddPerson.js';
 import Filter from './Filter.js';
-
+import { connect } from 'react-redux';
 class TablePerson extends React.Component {
     constructor(props) {
         super(props);
@@ -12,26 +12,13 @@ class TablePerson extends React.Component {
         //Recuperer les donnees
         if (!localStorage.getItem('PersonsData')) {
             console.log("Using data from Data");
-            this.state.table = [
-                <Person name="Amine" product="Cinema" price="45.00" />,
-                <Person name="Sophie" product="Burger" price="35.00" />,
-                <Person name="Kévin" product="Escape Game" price="110.00" />,
-                <Person name="Julie" product="Playing cards" price="6.00" />,
-                <Person name="Lucie" product="Draught beers" price="120.00" />,
-                <Person name="Amine" product="Costumes" price="150.00" />,
-                <Person name="Alex" product="Cleaning stuff" price="80.00" />,
-                <Person name="Sara" product="Tequila" price="22.00" />,
-                <Person name="Julie" product="Shooters" price="50.00" />,
-                <Person name="Kévin" product="Whisky" price="70.00" />
-            ];
+            this.state.table = this.props.table;
         } else {
             console.log("Using data from LocalStorage");
             this.state.table = JSON.parse(localStorage.getItem('PersonsData'));
         }
         this.tableFinal = this.state.table;
     }
-
-
 
     componentDidMount() {
         this.timerID = setInterval(
@@ -42,7 +29,6 @@ class TablePerson extends React.Component {
 
     componentWillUpdate(nextProps, nextState) {
         localStorage.setItem('PersonsData', JSON.stringify(this.state.table));
-        localStorage.setItem('StorageDate', Date.now());
     }
 
     componentWillMount() {
@@ -63,14 +49,33 @@ class TablePerson extends React.Component {
     }
 
     render() {
-        //Ajouter un Item
+        //Ajouter un Item a la table
         let addPerson = <AddPerson table={this.state.table} />;
+        //Afficher la table Filter
         let filter = <Filter table={this.state.table} />
         return <div className="tableFinal">
             {filter}
             {addPerson}
+       
         </div>
     }
 }
 
-export default TablePerson
+const mapState = (state) => {
+    return {
+      table : state.table
+  
+    };
+  };
+  const mapDispatch =(dispatch) => {
+    return {
+      newPerson: (person) => {
+        dispatch({
+          type:"ADD_PERSON",
+          payload: person
+        });
+      }
+    };
+  };
+  export default connect(mapState,mapDispatch)(TablePerson);
+

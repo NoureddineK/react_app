@@ -13,21 +13,18 @@ class App extends Component {
           <h1 className="App-title">Integration Week End</h1>
         </header>
         <div>
-          {tableau}
-          <Person name={this.props.user.name}product="Test" price="10.00" />
-      
+          <TablePerson table={this.props.table.table} />
         </div>
       </div>
     );
   }
 }
 
-let tableau = <TablePerson />;
-
 const mapStateToProps = (state) => {
   return {
-    user: state.userReducer,
-    math: state.mathReducer
+    user: state.user,
+    table : state.table
+
   };
 };
 const mapDispatchToProps =(dispatch) => {

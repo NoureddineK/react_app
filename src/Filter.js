@@ -54,8 +54,10 @@ class Filter extends React.Component {
                     {tabProduct}
                 </table>
                 <div className="total">
-                    <h4>TOTAL EXPENSES </h4>
-                    $ {sum.toFixed(2)}
+                    <h4 className="total_text">TOTAL EXPENSES  
+                    <br />$ {sum.toFixed(2)}
+                    </h4>
+                   
                 </div>
 
             </div>);
