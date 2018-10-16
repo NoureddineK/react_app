@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import './App.css';
+import React from 'react';
+import '../App.css';
+import { connect } from "react-redux";
+import { addUser } from "../actions/addPersonActions";
+import { setName } from "../actions/userActions";
 class Filter extends React.Component {
     constructor(props) {
         super(props);
         this.state = { table: '', value: 'All' };
-        this.state.table = this.props.table;
-        this.tableFinal = this.state.table;
+        this.tableFinal = this.props.table.tablePerson;
         this.selectedValueChange = this.selectedValueChange.bind(this);
     }
 
@@ -13,7 +15,8 @@ class Filter extends React.Component {
     selectedValueChange(event) {
         this.setState({ value: event.target.value });
         if (event.target.value === "All") {
-            this.tableFinal = JSON.parse(localStorage.getItem('PersonsData'));
+            this.tableFinal = this.props.table.tablePerson;
+           // this.tableFinal = JSON.parse(localStorage.getItem('PersonsData'));
         } else {
             this.tableFinal = this.getDataFilter(event.target.value);;
         }
@@ -23,9 +26,8 @@ class Filter extends React.Component {
     //Fonction de filtrage
     getDataFilter(filter) {
         let tab = [];
-        tab = this.state.table.filter(function (p) {
+        tab = this.props.table.tablePerson.filter(function (p) {
             if (p.props.name === filter) {
-                console.log("FilterName  : " + filter);
                 return p;
             }
         });
@@ -65,7 +67,7 @@ class Filter extends React.Component {
     render() {
         //Supprimer les Noms en double
         let tabF = [];
-        this.state.table.map((p) => {
+        this.props.table.tablePerson.map((p) => {
             if (tabF.indexOf(p.props.name) === -1) {
                 tabF.push(p.props.name);
             }
@@ -88,4 +90,17 @@ class Filter extends React.Component {
 
     }
 }
-export default Filter
+
+const mapStateToProps = (state) => {
+    return {
+      person: state.person,
+      table: state.table
+    };
+  };
+  
+  
+  const mapDispatchToProps = dispatch => ({
+    setName: name => dispatch(setName(name)),
+    addUser: person => dispatch(addUser(person)),
+  })
+  export default connect(mapStateToProps, mapDispatchToProps)(Filter);
